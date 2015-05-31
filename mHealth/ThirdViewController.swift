@@ -55,6 +55,14 @@ class ThirdViewController: UIViewController {
     var tempData = NSManagedObject(entity: entity!,
       insertIntoManagedObjectContext:context)
     
+    var entity2 =  NSEntityDescription.entityForName("UserRunning",
+      inManagedObjectContext:
+      context)
+    
+    var tempData2 = NSManagedObject(entity: entity2!,
+      insertIntoManagedObjectContext:context)
+    
+    
     var temp = Int(hoursSlept.value)
     tempData.setValue(temp, forKey: "sleepHours")
     
@@ -67,29 +75,64 @@ class ThirdViewController: UIViewController {
     var temp4 = Int(minutesExercised.value)
     tempData.setValue(temp4, forKey: "minutesMoved")
     
+    if (userRunning.count > 0 ) {
+      var temp10=userRunning[userRunning.count-1]
+      var temp5 = Double(calculateLEChange()) + (temp10.valueForKey("accumulatedLE")! as! Double )
+      println("temp10 \(temp10)")
+      println("temp5  \(temp5)")
+      tempData2.setValue(temp5, forKey: "accumulatedLE")
+    }
+
+    
+    var temp6 = calculateLEChange()
+    tempData2.setValue(temp6, forKey: "dailyGain")
+    
     var error: NSError?
     if !context.save(&error) {
       println("Could not save \(error), \(error?.userInfo)")
     }
+    else
+    {
+      println("All good nigga")
+    }
 
-    calculateLEChange()
+    
   }
-  func calculateLEChange() {
+  func calculateLEChange() -> Int {
     if (userData.count == 0) {
-      return
+      return 0
     } else {
       let latestDemo = userData[userData.count-1]
+      var isSmoker = latestDemo.valueForKey("isSmoker") as! Bool
       let gainFromExercise = Int(minutesExercised.value) * 7
+      var gainFromSmokingReduction = 0
+      var gainFromSleeping = 0
       
-      if (latestDemo.valueForKey("isSmoker") ) {
-        if (latestDemo.valueForKey("heavySmoker")) {
-          
+      if (isSmoker ) {
+        gainFromSmokingReduction = (latestDemo.valueForKey("heavySmoker") as! Bool) ? 11 * (40 - Int(cigsSmoked.value) ) : 11 * (10 - Int(cigsSmoked.value))
+      }
+      
+      if ((latestDemo.valueForKey("gender") as! String) == "MALE") {
+        if (Int(hoursSlept.value) < 7) {
+          gainFromSleeping = -10
         }
-        else {
-          
+        else if (Int(hoursSlept.value) > 8) {
+          gainFromSleeping = -7
         }
       }
-      let gainFromSleeping =
+      else {
+        if (Int(hoursSlept.value) < 7) {
+          gainFromSleeping = -7
+        }
+        else if (Int(hoursSlept.value) > 8) {
+          gainFromSleeping = -5
+        }
+
+      }
+      
+      minutesLEchange = gainFromExercise + gainFromSmokingReduction + gainFromSleeping
+      
+      return minutesLEchange
     }
   }
   override func viewDidLoad() {

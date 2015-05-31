@@ -46,6 +46,13 @@ class SecondViewController: UIViewController {
     var tempData = NSManagedObject(entity: entity!,
       insertIntoManagedObjectContext:context)
     
+    var entity2 =  NSEntityDescription.entityForName("UserRunning",
+      inManagedObjectContext:
+      context)
+    
+    var tempData2 = NSManagedObject(entity: entity2!,
+      insertIntoManagedObjectContext:context)
+    
     if isSmoker.selectedSegmentIndex == 0 {
       tempData.setValue(true, forKey: "isSmoker")
     }
@@ -119,6 +126,7 @@ class SecondViewController: UIViewController {
     
     
     tempData.setValue(calculateInitialLE(), forKey: "initialLE")
+    tempData2.setValue((calculateInitialLE() * 525949), forKey: "accumulatedLE")
     
     var error2: NSError?
     if !context.save(&error2) {

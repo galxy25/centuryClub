@@ -21,8 +21,13 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="weight" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
     </entity>
+    <entity name="UserRunning" syncable="YES">
+        <attribute name="accumulatedLE" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="dailyGain" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+    </entity>
     <elements>
         <element name="UserDaily" positionX="-54" positionY="99" width="128" height="105"/>
         <element name="UserData" positionX="-54" positionY="-9" width="128" height="240"/>
+        <element name="UserRunning" positionX="-54" positionY="99" width="128" height="75"/>
     </elements>
 </model>

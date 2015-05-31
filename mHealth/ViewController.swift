@@ -12,6 +12,8 @@ import HealthKit
 
 var userData = [NSManagedObject]()
 var userDaily = [NSManagedObject]()
+var userRunning = [NSManagedObject]()
+
 var maleLE = [0:76.1,
   1:75.62,
   2:74.65,
@@ -255,8 +257,8 @@ var femaleLE = [0:80.94,
   119:0.6
 ]
 
-var initialUserLE:Double = 0.0
-var minutesLEchange:Double = 0.0
+var initialUserLE:Double = 0
+var minutesLEchange = 0
 
 class ViewController: UIViewController {
   let healthManager:HealthManager = HealthManager()
@@ -281,15 +283,12 @@ class ViewController: UIViewController {
     managedContext.executeFetchRequest(fetchRequest,
       error: &error) as? [NSManagedObject]
     
-    
-      println("Before: \(userData.count)")
     if var results = fetchedResults {
       userData = results
-//      println(userData)
-       println("After: \(userData.count)")
       if userData.count > 0 {
         var temp = userData[userData.count-1]
         var temp6 = temp.valueForKey("initialLE") as! Double
+        println("Temp6: \(temp6)")
         initialUserLE = temp6
         temp6 = temp6 * 525949
         intialLEMinutes.text = "Initial Minutes Of Life: \(temp6)"
@@ -302,29 +301,55 @@ class ViewController: UIViewController {
       println("Could not fetch \(error), \(error!.userInfo)")
     }
     
-      var fetchRequest2 = NSFetchRequest(entityName:"UserDaily")
-      fetchRequest2.returnsObjectsAsFaults = false;
+//      var fetchRequest2 = NSFetchRequest(entityName:"UserDaily")
+//      fetchRequest2.returnsObjectsAsFaults = false;
+//      
+//      var error2: NSError?
+//      
+//      var fetchedResults2 =
+//      managedContext.executeFetchRequest(fetchRequest2,
+//        error: &error2) as? [NSManagedObject]
+//      
+//      if var results2 = fetchedResults2 {
+//        userDaily = results2
+//        var temp2=userDaily.first
+//        if (temp2 != nil)  {
+//          println(userDaily)
+//        }
+//        else
+//        {
+//          println("Nope")
+//        }
+//      } else {
+//        println("Could not fetch \(error2), \(error2!.userInfo)")
+//      }
       
-      var error2: NSError?
+      var fetchRequest3 = NSFetchRequest(entityName:"UserRunning")
+      fetchRequest3.returnsObjectsAsFaults = false;
       
-      var fetchedResults2 =
-      managedContext.executeFetchRequest(fetchRequest2,
-        error: &error2) as? [NSManagedObject]
+      var error3: NSError?
       
-      if var results2 = fetchedResults2 {
-        userDaily = results2
-        var temp2=userDaily.first
-        if (temp2 != nil)  {
-          println(userDaily)
+      var fetchedResults3 =
+      managedContext.executeFetchRequest(fetchRequest3,
+        error: &error3) as? [NSManagedObject]
+      
+      if var results3 = fetchedResults3 {
+        userRunning = results3
+        if (userRunning.count > 0 ) {
+          var temp3=userRunning[userRunning.count-1]
+          println("temp3: \(temp3)")
+          var temp4 = temp3.valueForKey("accumulatedLE") as! Double
+          var temp5 = (temp4 - (initialUserLE * 525949))
+          
+          totalMinutesGained.text = "Total Gained Since Start: \(temp5)"
+          var temp42 = temp3.valueForKey("dailyGain")! as! Double
+          dailyStat.text = "\(temp42)"
         }
-        else
-        {
-          println("Nope")
-        }
+        
       } else {
-        println("Could not fetch \(error2), \(error2!.userInfo)")
+        println("Could not fetch \(error3), \(error3!.userInfo)")
       }
-      
+
       healthManager.authorizeHealthKit { (authorized,  error) -> Void in
         if authorized {
           println("HealthKit authorization received.")
@@ -342,26 +367,6 @@ class ViewController: UIViewController {
     // Do any additional setup after loading the view, typically from a nib.
   }
 
-  private func predicateForSamplesToday() -> NSPredicate
-  {
-    let (starDate: NSDate, endDate: NSDate) = self.datesFromToday()
-    
-    let predicate: NSPredicate = HKQuery.predicateForSamplesWithStartDate(starDate, endDate: endDate, options: HKQueryOptions.StrictStartDate)
-    
-    return predicate
-  }
-  
-  private func datesFromToday() -> (NSDate, NSDate)
-  {
-    let calendar: NSCalendar = NSCalendar.currentCalendar()
-    
-    let nowDate: NSDate = NSDate()
-    
-    let starDate: NSDate = calendar.startOfDayForDate(nowDate)
-    let endDate: NSDate = calendar.dateByAddingUnit(NSCalendarUnit.CalendarUnitDay, value: 1, toDate: starDate, options: NSCalendarOptions.allZeros)!
-    
-    return (starDate, endDate)
-  }
   
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
