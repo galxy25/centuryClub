@@ -337,6 +337,8 @@ class ViewController: UIViewController {
         userRunning = results3
         if (userRunning.count > 0 ) {
           var temp3=userRunning[userRunning.count-1]
+          let defaults = NSUserDefaults.standardUserDefaults()
+          defaults.setObject("temp3", forKey: "userRunning")
           println("temp3: \(temp3)")
           var temp4 = temp3.valueForKey("accumulatedLE") as! Double
           var temp5 = (temp4 - (initialUserLE * 525949))
