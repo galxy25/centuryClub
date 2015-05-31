@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="14D136" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="UserDaily" syncable="YES">
+        <attribute name="cigarettes" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="drinks" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="minutesMoved" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="sleepHours" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+    </entity>
+    <entity name="UserData" syncable="YES">
+        <attribute name="age" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="cigarettesPerDay" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="diabetes" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="gender" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="heavySmoker" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="height" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="highBloodPressure" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="hoursExercisePerWeek" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="hypertension" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="initialLE" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="isSmoker" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="weight" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="UserDaily" positionX="-54" positionY="99" width="128" height="105"/>
+        <element name="UserData" positionX="-54" positionY="-9" width="128" height="240"/>
+    </elements>
+</model>
